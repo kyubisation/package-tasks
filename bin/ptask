@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+'use strict';
+
+process.title = 'package-tasks';
+
+const { TaskRunner } = require('../index');
+require('ts-node').register({
+    experimentalDecorators: true,
+    emitDecoratorMetadata: true,
+});
+
+new TaskRunner(process.argv[2])
+    .safeExecute(...process.argv.slice(3));

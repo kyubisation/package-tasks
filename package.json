@@ -1,0 +1,34 @@
+{
+  "name": "package-tasks",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "ptask": "./bin/ptask"
+  },
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyubisation/package-tasks.git"
+  },
+  "author": "kyubisation (lukas.spirig@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kyubisation/package-tasks/issues"
+  },
+  "homepage": "https://github.com/kyubisation/package-tasks#readme",
+  "devDependencies": {
+    "@types/node": "^9.6.2",
+    "rollup": "^0.57.1",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-typescript2": "^0.13.0",
+    "typescript": "^2.8.1"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.12",
+    "ts-node": "^5.0.1",
+    "tslib": "^1.9.0"
+  }
+}
