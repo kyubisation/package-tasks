@@ -2,12 +2,15 @@
   "name": "package-tasks",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "./index.js",
+  "types": "./typings/index.d.ts",
   "bin": {
     "ptask": "./bin/ptask"
   },
   "scripts": {
-    "build": "rollup -c"
+    "prebuild": "rimraf typings",
+    "build": "rollup -c",
+    "postbuild": "tsc -p ./tasks/tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -21,6 +24,7 @@
   "homepage": "https://github.com/kyubisation/package-tasks#readme",
   "devDependencies": {
     "@types/node": "^9.6.2",
+    "rimraf": "^2.6.2",
     "rollup": "^0.57.1",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-typescript2": "^0.13.0",

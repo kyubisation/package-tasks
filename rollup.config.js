@@ -12,6 +12,9 @@ export default {
     resolve(),
     typescript({
       clean: true,
+      exclude: ['tasks/*.ts', '**/*.d.ts'],
+      useTsconfigDeclarationDir: true,
     }),
-  ]
+  ],
+  external: ['reflect-metadata'],
 };
