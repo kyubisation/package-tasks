@@ -50,9 +50,12 @@ export class TaskRunner extends Task {
     }
 
     private async _findTask() {
-        for (const dir of this._taskDirs) {
+        const potentialTaskFiles = this._taskDirs
+            .map(d => ['js', 'ts'].map(e => `${d}/${this._task}.${e}`))
+            .reduce((current, next) => current.concat(next));
+        for (const file of potentialTaskFiles) {
             try {
-                const task: { default: { new(): Task } } = await import(`${dir}/${this._task}`);
+                const task: { default: { new(): Task } } = await import(file);
                 return task.default;
             } catch (error) {
             }
