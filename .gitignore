@@ -57,3 +57,10 @@ typings/
 # dotenv environment variables file
 .env
 
+# Compiled files
+*.js
+*.d.ts
+.rpt2_cache
+
+# VS Code
+.vscode
