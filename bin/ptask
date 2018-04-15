@@ -4,10 +4,15 @@
 process.title = 'package-tasks';
 
 const { TaskRunner } = require('../index');
+const { join } = require('path');
 require('ts-node').register({
-    experimentalDecorators: true,
-    emitDecoratorMetadata: true,
+    compilerOptions: {
+        module: 'commonjs',
+        moduleResolution: 'node',
+        experimentalDecorators: true,
+        emitDecoratorMetadata: true,
+    },
 });
 
-new TaskRunner(process.argv[2])
+new TaskRunner(process.argv[2], [join(__dirname, '..', 'tasks')])
     .safeExecute(...process.argv.slice(3));
