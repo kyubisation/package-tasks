@@ -5,7 +5,7 @@ export default {
   input: 'index.ts',
   output: {
     file: 'index.js',
-    format: 'cjs'
+    format: 'es'
   },
   experimentalDynamicImport: true,
   plugins: [

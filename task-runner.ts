@@ -51,7 +51,7 @@ export class TaskRunner extends Task {
 
     private async _findTask() {
         const potentialTaskFiles = this._taskDirs
-            .map(d => ['js', 'ts'].map(e => `${d}/${this._task}.${e}`))
+            .map(d => ['js', 'mjs', 'ts'].map(e => `${d}/${this._task}.${e}`))
             .reduce((current, next) => current.concat(next));
         for (const file of potentialTaskFiles) {
             try {

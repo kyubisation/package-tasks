@@ -3,16 +3,26 @@
 
 process.title = 'package-tasks';
 
-const { TaskRunner } = require('../index');
-const { join } = require('path');
+require = require('esm')(module);
 require('ts-node').register({
     compilerOptions: {
-        module: 'commonjs',
+        module: 'ESNext',
         moduleResolution: 'node',
         experimentalDecorators: true,
         emitDecoratorMetadata: true,
     },
 });
 
-new TaskRunner(process.argv[2], [join(__dirname, '..', 'tasks')])
+const { TaskRunner } = require('../index');
+const { isAbsolute, join, normalize } = require('path');
+
+const dirs = Object.keys(process.env)
+    .filter(e => e.endsWith('_ptaskDirs'))
+    .map(e => process.env[e])
+    .reduce((current, next) => current.concat(next.split(/[,;]/g)), [])
+    .map(d => isAbsolute(d) ? d : join(process.cwd(), d))
+    .map(d => normalize(d))
+    .concat(join(__dirname, '..', 'tasks'));
+
+new TaskRunner(process.argv[2], dirs)
     .safeExecute(...process.argv.slice(3));
