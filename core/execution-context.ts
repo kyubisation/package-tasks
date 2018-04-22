@@ -40,11 +40,9 @@ export class ExecutionContext {
     }
 
     private _resolveArgumentInputs(arg: Argument) {
-        return new Array<string>()
-            .concat(arg.name)
+        return new Array<string>(arg.name)
             .concat(arg.alias || [])
-            .reduce(
-                (current, next) => current.concat(this._argumentMap.get(next) || []),
-                new Array<string>());
+            .map(n => this._argumentMap.get(n) || [])
+            .reduce((current, next) => current.concat(next), new Array<string>());
     }
 }
