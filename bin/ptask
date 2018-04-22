@@ -25,4 +25,5 @@ const dirs = Object.keys(process.env)
     .concat(join(__dirname, '..', 'tasks'));
 
 new TaskRunner(process.argv[2], dirs)
-    .safeExecute(...process.argv.slice(3));
+    .execute(...process.argv.slice(3))
+    .catch(e => console.error(e));
