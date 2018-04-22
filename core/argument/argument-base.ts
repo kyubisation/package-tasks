@@ -15,10 +15,6 @@ export abstract class ArgumentBase implements Argument {
             .map(a => a.trim().replace(/^-+/, ''));
     }
 
-    get names() {
-        return [this.name].concat(this.alias);
-    }
-
     formatAliases(): string {
         return this.alias
             .map(a => `-${a.length > 4 ? '-' : ''}${a} <value>`)
