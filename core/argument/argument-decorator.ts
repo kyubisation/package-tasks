@@ -1,45 +1,29 @@
 import 'reflect-metadata';
 
-import { Argument } from './argument';
-import { ArgumentBase } from './argument-base';
 import { ArgumentOptions } from './argument-options';
-import { BooleanArgument } from './boolean-argument';
-import { NumberArgument } from './number-argument';
-import { StringArgument } from './string-argument';
+import { PropertyArgumentBuilder, PropertyArgument } from './property';
 
-type ArgumentConstructor = {
-    new(
-        name: string,
-        alias?: string[],
-        description?: string,
-        allowMultiple?: boolean): ArgumentBase
-};
-const STORE = new WeakMap<Object, Argument[]>();
-const DESIGN_METADATA = 'design:type';
-const SUPPORTED_TYPES = new Map<any, ArgumentConstructor>()
-    .set(Object, StringArgument)
-    .set(String, StringArgument)
-    .set(Number, NumberArgument)
-    .set(Boolean, BooleanArgument);
+const PROPERTY_ARGUMENT_BUILDER = new PropertyArgumentBuilder();
+const PROPERTY_ARGUMENTS_KEY = Symbol('arguments:property');
+const PARAMETER_ARGUMENTS_KEY = Symbol('arguments:parameter');
 
 export function Arg(args: ArgumentOptions = {}): PropertyDecorator {
     return (target: Object, propertyKey: string | symbol) => {
-        const name = typeof propertyKey === 'symbol'
-            ? propertyKey.toString().slice(7, -1) : propertyKey;
-        const type = args.type
-            || Reflect.getMetadata(DESIGN_METADATA, target, propertyKey)
-            || String;
-        const ArgumentType = SUPPORTED_TYPES.get(type);
-        if (!ArgumentType) {
-            throw new Error(`Unsupported argument type '${type}'`);
-        }
-
-        const argument = new ArgumentType(
-            name, new Array<string>().concat(args.alias || []), args.description, args.allowMultiple);
-        STORE.set(target, (STORE.get(target) || []).concat(argument));
+        const argument = PROPERTY_ARGUMENT_BUILDER.buildPropertyArgument(target, propertyKey, args);
+        const propertyArguments = Reflect.getMetadata(PROPERTY_ARGUMENTS_KEY, target) || [];
+        Reflect.defineMetadata(PROPERTY_ARGUMENTS_KEY, propertyArguments.concat(argument), target);
     };
 }
 
-export function taskArguments(task: Object): Argument[] | undefined {
-    return STORE.get(task);
+export function Param(): ParameterDecorator {
+    return (target: Object, propertyKey: string | symbol, parameterIndex: number) => {
+    };
+}
+
+export function propertyArguments(task: Object): PropertyArgument[] {
+    return Reflect.getMetadata(PROPERTY_ARGUMENTS_KEY, task) || [];
+}
+
+export function parameterArguments(task: Object): PropertyArgument[] {
+    return Reflect.getMetadata(PARAMETER_ARGUMENTS_KEY, task) || [];
 }

@@ -1,4 +1,4 @@
-import { Argument, taskArguments } from './argument';
+import { PropertyArgument, propertyArguments } from './argument';
 
 export abstract class Task {
     abstract execute(...args: any[]): Promise<void>;
@@ -12,17 +12,17 @@ export abstract class Task {
     }
 
     protected _printArguments() {
-        const args = taskArguments(Object.getPrototypeOf(this));
+        const args = propertyArguments(Object.getPrototypeOf(this));
         return (args || [])
             .map(arg => this._formatArgument(arg))
             .join('\n');
     }
 
-    private _formatArgument(arg: Argument) {
+    private _formatArgument(arg: PropertyArgument) {
         const defaultValue = (this as any)[arg.name];
-        return `  --${arg.name}${arg.type ? ` (${arg.type})` : ''}`
+        return `  --${arg.name}${arg.type ? ` (${arg.type.name})` : ''}`
             + (![undefined, ''].includes(defaultValue) ? ` (Default: ${defaultValue})` : '')
             + (arg.description ? ` ${arg.description}` : '')
-            + (arg.alias.length ? `\n    Aliases: ${arg.formatAliases()}` : '');
+            + (arg.alias.length ? `\n    Aliases: ${arg.type.formatAliases(arg.alias)}` : '');
     }
 }

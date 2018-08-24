@@ -12,7 +12,8 @@
     "clean": "rimraf index.js typings tasks/*.d.ts tasks/*.js",
     "prebuild": "npm run clean",
     "build": "rollup -c",
-    "postbuild": "tsc -p ./tasks/tsconfig.json"
+    "postbuild": "tsc -p ./tasks/tsconfig.json",
+    "test": "ptask copy -h"
   },
   "repository": {
     "type": "git",
